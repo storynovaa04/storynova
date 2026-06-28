@@ -1,24 +1,532 @@
-Bhai yeh problem hai — GitHub pe purana code hai abhi bhi! Nayi file update nahi hui.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storynova — AI Video Ads</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
----
+  :root {
+    --black: #080808;
+    --surface: #111114;
+    --card: #16161a;
+    --border: rgba(255,255,255,0.07);
+    --white: #f0f0f0;
+    --muted: #888;
+    --accent: #7B5CF6;
+    --accent2: #C084FC;
+    --glow: rgba(123,92,246,0.35);
+  }
 
-## Abhi Yeh Karo — Direct Fix
+  html { scroll-behavior: smooth; }
 
-**1.** Yeh link kholo:
-```
-https://github.com/storynovaa04/storynova/blob/main/index.html
-```
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+  }
 
-**2.** Pencil ✏️ icon pe click karo
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    backdrop-filter: blur(20px);
+    background: rgba(8,8,8,0.7);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent); color: #fff !important;
+    padding: 10px 22px; border-radius: 8px;
+    font-weight: 600 !important; font-size: 14px !important;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { background: var(--accent2) !important; transform: translateY(-1px); }
 
-**3.** `Ctrl + A` — saara code select karo
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; text-align: center;
+    padding: 140px 40px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,92,246,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(123,92,246,0.12); border: 1px solid rgba(123,92,246,0.3);
+    border-radius: 100px; padding: 6px 16px; margin-bottom: 32px;
+    font-size: 13px; color: var(--accent2); font-weight: 500;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
 
-**4.** `Delete` dabao
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 7vw, 88px);
+    font-weight: 800; line-height: 1.0;
+    letter-spacing: -3px; margin-bottom: 24px;
+  }
+  .hero h1 .line2 {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, #fff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--muted); max-width: 520px;
+    line-height: 1.7; margin-bottom: 44px; font-weight: 400;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    padding: 14px 32px; border-radius: 10px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    transition: all 0.2s; box-shadow: 0 0 30px var(--glow);
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 0 50px var(--glow); }
+  .btn-ghost {
+    border: 1px solid var(--border); color: var(--white);
+    padding: 14px 32px; border-radius: 10px;
+    font-size: 15px; font-weight: 500; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
 
-**5.** Neeche di hui nayi file ka code copy karo aur paste karo
+  /* STATS */
+  .stats {
+    display: flex; justify-content: center; gap: 60px;
+    padding: 60px 40px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800;
+    background: linear-gradient(135deg, #fff, var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 6px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
-**6.** Commit changes dabao
+  /* SECTION */
+  section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(30px, 4vw, 52px);
+    font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section-sub { font-size: 17px; color: var(--muted); max-width: 480px; line-height: 1.7; margin-bottom: 56px; }
 
----
+  /* SERVICES */
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+  }
+  .service-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 36px 32px;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .service-card:hover { border-color: rgba(123,92,246,0.4); transform: translateY(-4px); }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon { font-size: 32px; margin-bottom: 20px; }
+  .service-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+  .service-card p { font-size: 15px; color: var(--muted); line-height: 1.65; }
 
-Nayi file yahan se download karo — download button pe click karo 👇Yeh file download karke GitHub pe `index.html` replace karo! 💪
+  /* PORTFOLIO */
+  .portfolio-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+  }
+  .portfolio-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .portfolio-card:hover { transform: translateY(-6px); border-color: rgba(123,92,246,0.35); }
+  .portfolio-thumb {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; position: relative;
+  }
+  .portfolio-thumb.t1 { background: linear-gradient(135deg, #1a0533 0%, #2d1b69 100%); }
+  .portfolio-thumb.t2 { background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 100%); }
+  .portfolio-thumb.t3 { background: linear-gradient(135deg, #1a0a00 0%, #4a1a00 100%); }
+  .portfolio-thumb.t4 { background: linear-gradient(135deg, #001a1a 0%, #00404a 100%); }
+  .play-btn {
+    position: absolute; width: 54px; height: 54px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; cursor: pointer; transition: background 0.2s;
+  }
+  .play-btn:hover { background: var(--accent); }
+  .portfolio-info { padding: 24px 26px; }
+  .portfolio-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--accent2); margin-bottom: 8px;
+  }
+  .portfolio-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .portfolio-info p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* PROCESS */
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step {
+    display: flex; gap: 40px; align-items: flex-start;
+    padding: 40px 0; border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .process-step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800;
+    color: rgba(123,92,246,0.15); line-height: 1; min-width: 90px;
+    letter-spacing: -3px;
+  }
+  .step-content h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+  .step-content p { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 520px; }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px;
+  }
+  .pricing-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px 36px;
+    position: relative; transition: transform 0.25s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(160deg, rgba(123,92,246,0.12) 0%, var(--card) 60%);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 16px; border-radius: 100px;
+    white-space: nowrap;
+  }
+  .pricing-name { font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .pricing-price { font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800; letter-spacing: -2px; margin-bottom: 6px; }
+  .pricing-price span { font-size: 18px; letter-spacing: 0; font-family: 'Space Grotesk', sans-serif; color: var(--muted); font-weight: 400; }
+  .pricing-desc { font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+  .pricing-features { list-style: none; margin-bottom: 36px; display: flex; flex-direction: column; gap: 12px; }
+  .pricing-features li { font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .pricing-features li::before { content: '✓'; color: var(--accent2); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .pricing-btn {
+    display: block; text-align: center; padding: 13px 20px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    border: 1px solid var(--border); color: var(--white);
+  }
+  .pricing-card.featured .pricing-btn {
+    background: var(--accent); border-color: var(--accent);
+    box-shadow: 0 0 24px var(--glow);
+  }
+  .pricing-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 100px 40px;
+    background: linear-gradient(160deg, rgba(123,92,246,0.08) 0%, transparent 60%);
+    border-top: 1px solid var(--border);
+    max-width: 100%;
+  }
+  .cta-section .section-title { margin: 0 auto 16px; }
+  .cta-section .section-sub { margin: 0 auto 44px; }
+  .cta-contact { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 40px;
+    border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted);
+  }
+  footer strong { color: var(--white); }
+
+  @media(max-width:768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 70px 24px; }
+    .stats { gap: 32px; padding: 48px 24px; }
+    .process-step { flex-direction: column; gap: 16px; }
+    .step-num { font-size: 42px; min-width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Storynova</div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact" class="nav-cta">DM For Order</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><span class="badge-dot"></span> AI-Powered Video Production</div>
+  <h1>
+    Your Brand.<br>
+    <span class="line2">Powered by AI.</span>
+  </h1>
+  <p class="hero-sub">We create cinematic AI video ads, reels & influencer content that stops the scroll and converts viewers into customers.</p>
+  <div class="hero-btns">
+    <a href="#work" class="btn-primary">View Our Work</a>
+    <a href="#contact" class="btn-ghost">Get a Free Sample</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item">
+    <div class="stat-num">50+</div>
+    <div class="stat-label">Videos Delivered</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">30+</div>
+    <div class="stat-label">Brands Served</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">48hr</div>
+    <div class="stat-label">Delivery Time</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">AI Generated</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-eyebrow">What We Do</div>
+  <h2 class="section-title">AI Content<br>That Converts</h2>
+  <p class="section-sub">From product ads to AI influencers — we build video content that makes your brand impossible to ignore.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🎬</div>
+      <h3>AI Video Ads</h3>
+      <p>High-converting video ads for Instagram, Facebook & YouTube — produced entirely with AI in 48 hours.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🤖</div>
+      <h3>AI Influencers</h3>
+      <p>Custom AI brand ambassadors who never ask for a fee, never cancel, and post 24/7.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📱</div>
+      <h3>Instagram Reels</h3>
+      <p>Scroll-stopping reels with voiceover, captions, and music — ready to post directly.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏪</div>
+      <h3>Product Commercials</h3>
+      <p>Cinematic product showcases that look like they cost lakhs — without the production budget.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">✍️</div>
+      <h3>Ad Copywriting</h3>
+      <p>Hooks, scripts & captions that speak to your audience and drive action — included with every order.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📦</div>
+      <h3>Monthly Packages</h3>
+      <p>Consistent content every month so your brand stays active, visible & growing online.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="work" style="background: var(--surface); max-width:100%; padding: 100px 0;">
+  <div style="max-width:1200px; margin:0 auto; padding:0 40px;">
+    <div class="section-eyebrow">Our Work</div>
+    <h2 class="section-title">Recent Projects</h2>
+    <p class="section-sub">Real AI videos made for real brands across different industries.</p>
+    <div class="portfolio-grid">
+      <div class="portfolio-card">
+        <div class="portfolio-thumb t1">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tag">Beauty Brand</div>
+          <h3>Luxury Perfume Ad</h3>
+          <p>Cinematic AI product ad with AI model & voiceover for an Indian fragrance brand.</p>
+        </div>
+      </div>
+      <div class="portfolio-card">
+        <div class="portfolio-thumb t2">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tag">Tech / SaaS</div>
+          <h3>SaaS Explainer Reel</h3>
+          <p>AI presenter explaining a software product — with animated UI, data visuals & hook.</p>
+        </div>
+      </div>
+      <div class="portfolio-card">
+        <div class="portfolio-thumb t3">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tag">Fitness</div>
+          <h3>Gym Launch Campaign</h3>
+          <p>High-energy reel series for a gym launch with AI athlete & motivational voiceover.</p>
+        </div>
+      </div>
+      <div class="portfolio-card">
+        <div class="portfolio-thumb t4">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-tag">Fashion</div>
+          <h3>AI Fashion Influencer</h3>
+          <p>Custom AI influencer showcasing clothing drops — posting-ready with captions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-eyebrow">How It Works</div>
+  <h2 class="section-title">From Brief to<br>Final Video</h2>
+  <p class="section-sub">Simple 4-step process. No meetings, no delays.</p>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h3>You Tell Us Your Brand</h3>
+        <p>Share your brand name, product, target audience & vibe. A quick DM is enough to get started — no lengthy brief needed.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h3>We Script & Storyboard</h3>
+        <p>Our team writes the hook, script, and visual plan tailored to your brand. You approve before production begins.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>AI Production</h3>
+        <p>We generate the video using our AI stack — visuals, voiceover, music, captions, and motion all handled in-house.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <h3>Delivered in 48 Hours</h3>
+        <p>Final video delivered in posting-ready format. One free revision included with every order.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background: var(--surface); max-width:100%; padding:100px 0;">
+  <div style="max-width:1200px; margin:0 auto; padding:0 40px;">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">Simple, Honest<br>Pricing</h2>
+    <p class="section-sub">No hidden charges. Pay per video or go monthly for best value.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price">₹799 <span>/ reel</span></div>
+        <div class="pricing-desc">Perfect for trying us out — one ready-to-post AI reel.</div>
+        <ul class="pricing-features">
+          <li>1 AI Video Reel (30–60 sec)</li>
+          <li>Script & Hook Included</li>
+          <li>Captions & Music</li>
+          <li>48hr Delivery</li>
+          <li>1 Free Revision</li>
+        </ul>
+        <a href="#contact" class="pricing-btn">Get Started</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="pricing-name">Growth</div>
+        <div class="pricing-price">₹1,999 <span>/ pack</span></div>
+        <div class="pricing-desc">3 reels pack — best value for growing brands. 🔥 Limited Time Offer!</div>
+        <ul class="pricing-features">
+          <li>3 AI Reels</li>
+          <li>AI Influencer Option</li>
+          <li>Custom Brand Voiceover</li>
+          <li>Caption Copywriting</li>
+          <li>Priority 24hr Delivery</li>
+          <li>Unlimited Revisions</li>
+        </ul>
+        <a href="#contact" class="pricing-btn">DM For Order</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Brand Pack</div>
+        <div class="pricing-price">₹5,999 <span>/ month</span></div>
+        <div class="pricing-desc">10 reels per month — full content pipeline for serious brands. 🔥 Limited Time!</div>
+        <ul class="pricing-features">
+          <li>10 AI Reels / Month</li>
+          <li>Dedicated AI Influencer</li>
+          <li>Product Commercials</li>
+          <li>Ad Copy for All Reels</li>
+          <li>Same-Day Delivery</li>
+          <li>Monthly Strategy Call</li>
+        </ul>
+        <a href="#contact" class="pricing-btn">Let's Talk</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <h2 class="section-title">Ready to Go Viral?</h2>
+  <p class="section-sub">DM us on Instagram or WhatsApp — and get a FREE sample reel for your brand.</p>
+  <div class="cta-contact">
+    <a href="https://instagram.com/storynovaa04" target="_blank" class="btn-primary">📸 Instagram — @storynovaa04</a>
+    <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn-ghost">💬 WhatsApp Us</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <strong>Storynova</strong> · AI Video Ads · Reels · Commercials · AI Influencers</p>
+  <p style="margin-top:8px;">Made with AI. Designed to convert.</p>
+</footer>
+
+</body>
+</html>
